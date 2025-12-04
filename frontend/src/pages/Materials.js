@@ -103,14 +103,18 @@ const Materials = () => {
     }
   };
 
+  // Thêm tham số selectedCurriculum 
   const fetchCoursesByMajor = async (majorId) => {
     try {
-      const res = await courseApi.getByMajor(majorId);
+      // Trước đây: const res = await courseApi.getByMajor(majorId);
+      // Bây giờ: Truyền thêm selectedCurriculum để lọc đúng môn của đề cương này
+      const res = await courseApi.getByMajor(majorId, selectedCurriculum);
       setCourses(Array.isArray(res.data) ? res.data : []);
     } catch {
       message.error("Lỗi tải danh sách môn học!");
     }
   };
+  //  KẾT THÚC SỬA 
 
   const fetchMaterialsByCourse = async (courseId) => {
     setLoading(true);
@@ -271,7 +275,7 @@ const Materials = () => {
 
           <Col xs={24} md={12} lg={5}>
             <Input
-              placeholder="🔍 Tìm tài liệu, tác giả..."
+              placeholder="Tìm tài liệu, tác giả..."
               prefix={<SearchOutlined />}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -333,7 +337,7 @@ const Materials = () => {
           pagination={{ pageSize: 10, showSizeChanger: true }}
           bordered
           scroll={{ x: 2000 }}
-          // ✨ === SỬA LỖI CỘT HÀNH ĐỘNG ===
+          //  === SỬA LỖI CỘT HÀNH ĐỘNG ===
           columns={[
             {
               title: "STT",
@@ -342,7 +346,6 @@ const Materials = () => {
               width: 60,
               fixed: "left", // Cố định STT
             },
-            // Cột Hành động đã bị XÓA khỏi đây
             { title: "Tên Tài Liệu", dataIndex: "title", width: 300 },
             { title: "Tác Giả", dataIndex: "author", width: 200 },
             { title: "Năm XB", dataIndex: "year", width: 100, align: "center" },
@@ -394,11 +397,10 @@ const Materials = () => {
               },
             },
             { title: "Ghi Chú", dataIndex: "notes", width: 200 },
-            // ✨ Cột Hành động đã được CHUYỂN xuống cuối
             {
               title: "Hành động",
               width: 100,
-              fixed: "right", // ✨ Đổi thành "right"
+              fixed: "right", // Đổi thành "right"
               align: "center",
               render: (_, record) => (
                 <Space>

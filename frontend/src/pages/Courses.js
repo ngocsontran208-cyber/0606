@@ -109,10 +109,13 @@ const Courses = () => {
     }
   };
 
+  // 🔥🔥🔥 ĐÃ SỬA Ở ĐÂY: Thêm tham số selectedCurriculum 🔥🔥🔥
   const fetchCourses = async (majorId) => {
     setLoading(true);
     try {
-      const res = await courseApi.getByMajor(majorId);
+      // SỬA LỖI: Truyền thêm selectedCurriculum để lọc môn chính xác theo đề cương
+      const res = await courseApi.getByMajor(majorId, selectedCurriculum);
+      
       const coursesData = Array.isArray(res.data) ? res.data : [];
       setCourses(coursesData);
       setFilteredCourses(coursesData);
@@ -123,6 +126,7 @@ const Courses = () => {
     }
     setLoading(false);
   };
+  // 🔥🔥🔥 KẾT THÚC SỬA 🔥🔥🔥
 
   const fetchApiCourses = async () => {
     if (!selectedCurriculum) return;
